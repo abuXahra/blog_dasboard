@@ -11,8 +11,8 @@ import Footer from "./components/footer/Footer";
 import Siderbar from "./components/sidebar/Siderbar";
 import HeaderDashboard from "./components/header/HeaderDashboard";
 import { useState } from "react";
-import DashboardHome from "./pages/amin/home/DashboardHome";
-import { Content, MainContent } from "./pages/amin/home/Home.style";
+import DashboardHome from "./pages/admin/home/DashboardHome";
+import { Content, MainContent } from "./pages/admin/home/Home.style";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
@@ -43,6 +43,7 @@ function App() {
             {/* Routes */}
             <Routes>
               <Route path="/" element={<DashboardHome />} />
+              <Route path="/dashboard" element={<DashboardHome />} />
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />
