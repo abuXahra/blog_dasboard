@@ -18,7 +18,7 @@ export default function BarChartComponent() {
   const fetchData = async () => {
     try {
       const res = await axios.get(
-        "http://localhost:5000/api/chart/bar-chart-data"
+        `${process.env.REACT_APP_URL}/api/chart/bar-chart-data`
       );
       setChartData(res.data);
     } catch (error) {
