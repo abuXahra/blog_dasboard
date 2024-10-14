@@ -4,9 +4,9 @@ import { PostContent, PostImage, PostItems, PostMetaTags, PostMetaTagsItem, Post
 import px from '../../images/angry-mob-youth.jpg'
 import {FaRegCommentAlt, FaRegEye, FaRegEdit} from 'react-icons/fa'
 
-export default function RecentPost() {
+export default function RecentPost({post}) {
 
-    const post = [
+    const posts = [
         {
             _id: "65f18bf7342e8e20143393cc",
             title: "Angry traders set Abuja market on fire",
@@ -71,18 +71,18 @@ export default function RecentPost() {
 
   return (
                 <PostItems>
-                    <PostImage px={px}></PostImage>
+                    <PostImage px={`${process.env.REACT_APP_URL}/images/${post.photo}`}></PostImage>
                     <PostContent>
-                      <PostTitle>{post[0].title}</PostTitle>
+                      <PostTitle>{post.title}</PostTitle>
                       <PostMetaTags>
                         <PostMetaTagsItem>
                           <span><FaRegCommentAlt /></span>
-                          <span>{post[0].comments.length} comments</span>
+                          <span>{post.comments.length} comments</span>
                         </PostMetaTagsItem>
-                        <PostMetaTagsItem>
+                        {/* <PostMetaTagsItem>
                           <span><FaRegEye /></span>
                           <span>{156} Views</span>
-                        </PostMetaTagsItem>         
+                        </PostMetaTagsItem>          */}
                         <PostMetaTagsItem>
                           <span><FaRegEdit /></span>
                           <span>Edit</span>

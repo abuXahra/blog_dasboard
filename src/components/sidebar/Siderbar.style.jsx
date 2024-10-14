@@ -6,7 +6,7 @@ export const SidebarWrapper  = styled.div`
     background-color: #00032a;
     color: white;
     position: fixed;
-   
+    display: ${({deskDisplaySidebar})=> deskDisplaySidebar || 'flex'};
     flex-direction: column;
   
 
@@ -30,6 +30,20 @@ position: relation;
     }
 `
 
+export const HamburgerWrapperi = styled.span`
+    position: absolute;
+    font-size: 25px;
+    right: 10px;
+    top: 20px;
+    cursor: pointer;
+    display: flex;
+    
+    @media (max-width: 768px) {
+        display: none;
+    }
+`
+
+
 export const HamburgerWrapper = styled.span`
     position: absolute;
     font-size: 25px;
@@ -37,8 +51,6 @@ export const HamburgerWrapper = styled.span`
     top: 20px;
     cursor: pointer;
     display: none;
-    
-
     
     @media (max-width: 768px) {
         display: ${({mobileIcon})=> mobileIcon || "flex" };

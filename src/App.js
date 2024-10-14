@@ -7,22 +7,27 @@ import {
 } from "react-router-dom";
 
 import ScrollToTop from "./components/context/ScrollToTop";
-import Footer from "./components/footer/Footer";
 import Siderbar from "./components/sidebar/Siderbar";
 import HeaderDashboard from "./components/header/HeaderDashboard";
 import { useState } from "react";
 import DashboardHome from "./pages/admin/home/DashboardHome";
 import { Content, MainContent } from "./pages/admin/home/Home.style";
+import Posts from "./pages/admin/posts/Posts";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
+  const [mainContentWidth, setMainContentWidth] = useState("80%");
+  const [showHbg, setShowHbg] = useState("none");
+  const [deskDisplaySidebar, setDeskDisplaySidebar] = useState("flex");
 
   const showSidebar = () => {
     setDisplayShowSidebar("flex");
   };
 
-  const hideSidebar = (url) => {
-    setDisplayShowSidebar("none");
+  const shoDesktopSidebar = () => {
+    setDeskDisplaySidebar("flex");
+    setMainContentWidth("80%");
+    setShowHbg("none");
   };
 
   // halal app
@@ -34,16 +39,25 @@ function App() {
           <Siderbar
             displayShowSidebar={displayShowSidebar}
             setDisplayShowSidebar={setDisplayShowSidebar}
+            setMainContentWidth={setMainContentWidth}
+            setShowHbg={setShowHbg}
+            deskDisplaySidebar={deskDisplaySidebar}
+            setDeskDisplaySidebar={setDeskDisplaySidebar}
           />
 
-          <MainContent>
+          <MainContent mainContentWidth={mainContentWidth}>
             {/* Header */}
-            <HeaderDashboard showSidebar={showSidebar} />
+            <HeaderDashboard
+              showSidebar={showSidebar}
+              showHbg={showHbg}
+              shoDesktopSidebar={shoDesktopSidebar}
+            />
 
             {/* Routes */}
             <Routes>
               <Route path="/" element={<DashboardHome />} />
               <Route path="/dashboard" element={<DashboardHome />} />
+              <Route path="/posts" element={<Posts />} />
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />
@@ -59,9 +73,6 @@ function App() {
               <Route path="/video-post" element={<CreateVideo />} />
               <Route path="/dashboard/home" element={<DashboardHome />} /> */}
             </Routes>
-
-            {/* Footer */}
-            <Footer />
           </MainContent>
         </Content>
       </ScrollToTop>

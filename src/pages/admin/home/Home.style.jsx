@@ -13,7 +13,7 @@ export const ContentSidebar = styled.div`
 `
 
 export const MainContent = styled.div`
-    width: 80%;
+    width: ${({mainContentWidth})=> mainContentWidth || '80%'};
     height: auto;
     position: absolute;
     top: 0px;

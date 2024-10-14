@@ -68,14 +68,23 @@ export const ProfileWrapper = styled.div`
 
 
 export const HamburgerWrapperHeader = styled.span`
-    
     font-size: 25px;
-    cursor: pointer;
+    cursor: pointer;  
     display: none;
-    
-
     
     @media (max-width: 768px) {
         display: flex;
+    }
+`
+
+export const HamburgerWrapperHeaderi = styled.span`
+    rotate: 180deg;
+    font-size: 25px;
+    cursor: pointer;
+    display: ${({showHbg})=> showHbg || 'none'};
+    
+    
+    @media (max-width: 768px) {
+        display: none;
     }
 `

@@ -1,6 +1,6 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AuthorContainer, ChartContainer, ChartContent, ChartWrapper, Container, DateTimeWrapper, GreetingCard, GreetingWrapper, HomeWrapper, PostItems, PostItemWrapper, ProfileDp, RecentPostWrapper, SpaceBtnContainer, TopCard, TopCardContent, TopCardContentWrapper, TopCardIcon, TotalPostContainer, UserContainer, UserWrapper } from './Home.style'
-import {MdOutlineDateRange} from 'react-icons/md'
+import {MdOutlineAdd, MdOutlineDateRange} from 'react-icons/md'
 import Dp from '../../../images/author.png'
 import {TfiWrite} from 'react-icons/tfi'
 import { TopCardItemList } from '../../../data/TopcardItems'
@@ -10,9 +10,30 @@ import Linecharts from '../../../components/chart/Linecharts'
 import UserTable from '../../../components/table/usertable/UserTable'
 import Button from '../../../components/clicks/button/Button'
 import RecentPost from '../../../components/RecentPost/RecentPost'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios'
 
 
 function DashboardHome() {
+
+  const navigate = useNavigate();
+  const [recentPost, setRecentPost] = useState([])
+
+  const fetchRecentPost = async () =>{
+    try {
+      const res = await axios.get(process.env.REACT_APP_URL+ '/api/posts');
+      console.log(res.data);
+      setRecentPost(res.data.slice(0, 5));
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  useEffect(()=>{
+    fetchRecentPost();
+  }, []);
+  
+
   return (
     <HomeWrapper>
         <GreetingWrapper>
@@ -82,12 +103,21 @@ function DashboardHome() {
           {/* Recent POST */}
           <RecentPostWrapper>
               <SpaceBtnContainer>
-                <h3>Recent Posts</h3>
-                <Button/>
+                <h3>Recent Blogs</h3>
+                <Button 
+                  btnText={'Add New'} 
+                  btnColor={'green'} 
+                  btnLeftIcon={<MdOutlineAdd />}
+                  btnOnClick={()=>navigate('/dashboard')}
+                />
               </SpaceBtnContainer>
 
               <PostItemWrapper>
-                  <RecentPost mx={786}/>
+                {
+                  recentPost && recentPost.map((post)=>(
+                    <RecentPost key={post?._id} post={post} />
+                  ))
+                }              
               </PostItemWrapper>
           </RecentPostWrapper>
       </Container>  

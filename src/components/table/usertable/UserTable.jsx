@@ -6,33 +6,31 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import userImage from '../../../images/professional_passport.png'
+import userImage from '../../../images/placeholder_image.png'
 import { ProfileWrapper } from '../../header/Header.style';
+import axios from 'axios';
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
-function createUserData(userImage, username, posts, email, useRole) {
-    return { userImage, username, posts, email, useRole };
-  }
-// Sample data for the table
-const userData = [
-    createUserData(userImage, 'Abu Amjad', 10, 'abdulmuminisah79@gmail.com', 'user'),
-    createUserData(userImage, 'Abu Amjad', 10, 'abdulmuminisah79@gmail.com', 'user'),
-    createUserData(userImage, 'Abu Amjad', 10, 'abdulmuminisah79@gmail.com', 'user'),
-    createUserData(userImage, 'Abu Amjad', 10, 'abdulmuminisah79@gmail.com', 'user'),
-];
 
 export default function UserTable() {
+
+  const [userData, setUserData] = React.useState([])
+
+  const fetchUserData = async () =>{
+    try {
+      const res = await axios.get(process.env.REACT_APP_URL+ '/api/users');
+      console.log('users: ',  res.data);
+      setUserData(res.data);
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  React.useEffect(()=>{
+    fetchUserData();
+  }, []);
+  
+
+
   return (
     <TableContainer component={Paper} style={{borderRadius: '15px'}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
@@ -53,13 +51,15 @@ export default function UserTable() {
             >
               <TableCell component="th" scope="row">
                 <ProfileWrapper>
-                    <img src={data.userImage} alt="" srcset="" />
+                   {!data.photo ? 
+                   <img src={userImage} alt="" srcset="" />:
+                   <img src={`${process.env.REACT_APP_URL}/images/${data.photo}`} alt="" srcset="" />}
                 </ProfileWrapper>
               </TableCell>
               <TableCell align="left">{data.username}</TableCell>
               <TableCell align="left">{data.posts}</TableCell>
               <TableCell align="left">{data.email}</TableCell>
-              <TableCell align="left">{data.useRole}</TableCell>
+              <TableCell align="left">{data.role}</TableCell>
             </TableRow>
           ))}
         </TableBody>
