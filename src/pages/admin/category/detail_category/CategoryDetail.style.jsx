@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 
-export const PostWrapper = styled.div`
+export const CategoryDetailWrapper = styled.div`
     width: 100%;
     height: ${({postWrapperHeight})=> postWrapperHeight || 'auto' };
     padding: 40px;
@@ -20,7 +20,6 @@ export const PostContent = styled.div`
     display: flex;
     flex-direction: column;
     gap: 30px;
-
 `
 
 
@@ -48,7 +47,7 @@ export const CategoryPostsImag = styled.div`
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 10px;
-   
+
     @media (max-width: 768px) {
         width: 100%;
  }
@@ -70,12 +69,10 @@ export const CategoryPostsText = styled.div`
         font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
 
-    /* span{
-        background-color: grey;
-        color: white;
-        padding: 10px;
-        width: 100px;
-    } */
+    @media (max-width: 768px) {
+        width: 100%;
+        padding: 20px;
+ }
 
 `
 
@@ -170,7 +167,8 @@ export const PostFormattingWrapper = styled.div`
     right: -200px;
     bottom: 20px;
 
-    @media (max-width: 768px) {
+    /* post mobile */
+@media (max-width: 768px) {
     align-items: start;
     justify-content: flex-start;
     position: relative;
@@ -189,9 +187,9 @@ export const PostFormattingItem = styled.div`
 export const PostFormattingIcon = styled.div`
     display: flex;
     color: ${({iconColor})=>iconColor};
-    font-size: ${({sz}) =>sz || '12px'};
+    font-size: 12px;
 `
 
 export const PostFormattingText = styled.div`
-     font-size: ${({sz}) =>sz || '12px'};;
+    font-size: 12px;
 `

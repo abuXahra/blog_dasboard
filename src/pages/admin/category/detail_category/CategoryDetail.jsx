@@ -1,28 +1,28 @@
 
 import React, { useEffect, useState } from 'react'
-import { CategoryPosts, CategoryPostsImag, CategoryPostsText, CategorySpan, DateIconStyled, DateStyled, DateTitledStyled, EditIconStyled, EditStyled, EditTitledStyled, FilledScreenContainer, LoaderContainer, PostContent, PostFormattingIcon, PostFormattingItem, PostFormattingText, PostFormattingWrapper, PostHeader, PostIconStyled, PostLink, PostLinks, PostTitleStyled, PostWrapper } from './Posts.style'
+import { CategoryDetailWrapper, CategoryPosts, CategoryPostsImag, CategoryPostsText, CategorySpan, DateIconStyled, DateStyled, DateTitledStyled, EditIconStyled, EditStyled, EditTitledStyled, FilledScreenContainer, LoaderContainer, PostContent, PostFormattingIcon, PostFormattingItem, PostFormattingText, PostFormattingWrapper, PostHeader, PostIconStyled, PostLink, PostLinks, PostTitleStyled, PostWrapper } from './CategoryDetail.style'
 import { AiFillEdit } from 'react-icons/ai'
 import axios from 'axios'
 import { FaEye, FaRegClock, FaRegEdit, FaTimes } from 'react-icons/fa'
 import Markdown from 'markdown-to-jsx'
-import Button from '../../../components/clicks/button/Button'
-import { useNavigate } from 'react-router-dom'
-import Loader from '../../../components/loader/Loader'
+import { useNavigate, useParams } from 'react-router-dom'
 import { MdDelete, MdOutlineAdd } from 'react-icons/md'
-import Pagination from '../../../components/pagination/Pagination'
-import { View } from 'lucide'
-import PostFormatting from '../../../components/post_formating_items/PostFormatting'
-import Overlay from '../../../components/overlay/Overlay'
+import Overlay from '../../../../components/overlay/Overlay'
+import Pagination from '../../../../components/pagination/Pagination'
+import PostFormatting from '../../../../components/post_formating_items/PostFormatting'
+import Button from '../../../../components/clicks/button/Button'
+import Loader from '../../../../components/loader/Loader'
+
+
 
 
 
 const POSTS_PER_PAGE = 5; //for pagination
 
-export default function Posts() {
+export default function CategoryDetail() {
 
 
     const navigate = useNavigate();
-    const [posts, setPosts] = useState([])
     const [loader, setLoader] = useState(false) //Loader
     const [currentPage, setCurrentPage] = useState(1); //for paginaon
 
@@ -32,38 +32,62 @@ export default function Posts() {
     
     // overlay
     const [showOverlay, setShowOverlay] = useState(false);
+   
+    const [catPosts, setCatPosts] = useState([])
+    const [catTitle, setCatTitle] = useState([])
+    const { categoryId } = useParams()
 
-     // fetch user post function
-     const fetchPosts = async () => {
-        setLoader(true)       
+
+
+
+
+
+
+
+
+    // fetch category title
+    const fectCategoryTitle = async () => {
         try {
-    
-            const res = await axios.get(process.env.REACT_APP_URL+"/api/posts/")
-            // const { data, pages: totalPages } = await res.data;
-            setPosts(res.data)
-            // console.log("user post are:", res.data);
-            setLoader(false)
+            const res = await axios.get(`${process.env.REACT_APP_URL}/api/categories/${categoryId}`)
+            setCatTitle(res.data.title)
         } catch (err) {
-           
+            console.log(err)
+        }
+    }
+
+
+    // fetch category pots
+    const fetchCotegoryPosts = async () => {
+      setLoader(true)
+        try {
+            const res = await axios.get(`${process.env.REACT_APP_URL}/api/categories/${categoryId}/posts`)
+
+            setCatPosts(res.data)
+            setLoader(false)
+            console.log(res.data)
+        } catch (err) {
             console.log(err)
             setLoader(false)
         }
     }
-
     useEffect(() => {
-        fetchPosts();
-    },[]);
+        fetchCotegoryPosts()
+        fectCategoryTitle()
+    }, [categoryId])
 
 
-    const totalPages = Math.ceil(posts.length / POSTS_PER_PAGE); //for pagination
-    const currentPosts = posts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE); //for pagination
+
+    const totalPages = Math.ceil(catPosts.length / POSTS_PER_PAGE);
+    const currentPosts = catPosts.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE); 
+
+
 
 
     // Delete Function
-    const handleDelete = async (postId) => {
+    const handleDelete = async (categoryId) => {
         setLoader(true)
         try {
-            const res = await axios.delete(process.env.REACT_APP_URL + `/api/posts/` + postId, { withCredentials: true });
+          const res = await axios.delete(`${process.env.REACT_APP_URL}/api/categories/${categoryId}`, { withCredentials: true });
             setLoader(false)
             navigate('/posts')
             alert('deleted')
@@ -83,16 +107,14 @@ export default function Posts() {
 
     }
 
+    console.log(catPosts.length, currentPosts.length)
     
   return (
-    <>
-    {
-        loader ? <Loader title={'Posts'} /> :
     <div>    
-    <PostWrapper postWrapperHeight={posts.length === 0 || currentPosts.length  < 5 ? '100vh': 'auto'} >
+    <CategoryDetailWrapper postWrapperHeight={catPosts.length === 0 || currentPosts.length  < 5? '800x': 'auto'} >
        
         <PostHeader>
-           <h1>All Posts</h1>
+           <h1>{catTitle ? (catTitle) : ('Category Title')}</h1>
            <Button 
                   btnText={'Add New'} 
                   btnColor={'blue'} 
@@ -109,7 +131,7 @@ export default function Posts() {
                     <CategoryPosts key={post._id}>
                      <CategoryPostsImag bg={`${process.env.REACT_APP_URL}/images/${post.photo}`}>
                          <PostLink to={`/post/${post._id}`}>
-                             {/* <img src={`${process.env.REACT_APP_URL}/images/${post.photo}`} alt="" /> */}
+                            
                          </PostLink>
                      </CategoryPostsImag>
 
@@ -135,19 +157,9 @@ export default function Posts() {
                              </DateStyled>
                          </PostIconStyled>
                          <PostLink to={`/post/${post._id}`}>
-                             <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{post.title}</PostTitleStyled>     </PostLink>
+                             <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{post.title}</PostTitleStyled></PostLink>
                        <p><Markdown>{post.desc.substring(0, 230)}</Markdown></p> 
                        
-
-                         <CategorySpan>
-                             {
-                                 post?.categories?.map((cat) => (
-                                     <div key={cat._id}>
-                                         <PostLinks to={`/category/${cat._id}`} linkColor='white'>{cat.title}</PostLinks>
-                                     </div>
-                                 ))
-                             }
-                         </CategorySpan>
                      </CategoryPostsText>
 
                      <PostFormattingWrapper>
@@ -158,7 +170,7 @@ export default function Posts() {
                             iconColor={'blue'}
                         />     
                         <PostFormatting
-                            itemOnclick={()=>navigate(`/edit/${post._id}`)}
+                            itemOnclick={()=>{}}
                             Icon={<FaRegEdit/>}
                             text={'Edit'}
                             iconColor={'green'}
@@ -184,7 +196,7 @@ export default function Posts() {
                         pageSize={POSTS_PER_PAGE}
                     />  
           
-    </PostWrapper>
+    </CategoryDetailWrapper>
 
         {/* Overlay Popup */}
         { showOverlay &&
@@ -199,7 +211,6 @@ export default function Posts() {
             <span>delete the post?</span> 
             </Overlay>}
 
-    </div>}
-    </>
+    </div>
   )
 }

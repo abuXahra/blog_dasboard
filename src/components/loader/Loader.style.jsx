@@ -9,4 +9,6 @@ justify-content: center;
 align-items: center;
 height: 100vh;
 background-color: white;
+flex-direction: column;
+gap: 20px;
 `

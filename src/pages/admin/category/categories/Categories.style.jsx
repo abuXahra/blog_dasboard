@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 
-export const PostWrapper = styled.div`
+export const CategoryWrapper = styled.div`
     width: 100%;
     height: ${({postWrapperHeight})=> postWrapperHeight || 'auto' };
     padding: 40px;
@@ -14,17 +14,17 @@ export const PostWrapper = styled.div`
 `
 
 
-export const PostContent = styled.div`
+export const CategoryContent = styled.div`
     width: 100%;
     height: auto;
     display: flex;
     flex-direction: column;
     gap: 30px;
-
+    
 `
 
 
-export const CategoryPosts = styled.div`
+export const CategoryItems = styled.div`
 width: 100%;
 display: flex;
 align-items: center;
@@ -33,49 +33,46 @@ background-color: white;
 border-radius: 10px;
 position: relative;
 
-@media (max-width: 768px) {
-  flex-direction: column;
- }
+
+
 `
 
 
 
-export const CategoryPostsImag = styled.div`
-    width: 30%;
-    height: 230px;
+export const CategoryImage = styled.div`
+    width: 20%;
+    height: 100px;
     background-image: url(${({bg})=>bg});
     background-position: center;
     background-size: cover;
     background-repeat: no-repeat;
     border-radius: 10px;
-   
-    @media (max-width: 768px) {
-        width: 100%;
- }
+    background-color: #00032a;
 `
 
-export const CategoryPostsText = styled.div`
-    width: 70%;
+export const CategoryText = styled.div`
+    width: 80%;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     gap: 10px;
     height: 100%;
-    justify-content:center;
+    justify-content:space-between;
+    align-items: center;
     font-size: 14px;
-    padding: 20px 0px;
+    padding: 20px;
     color: grey;
+
 
     p{
 
         font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
     }
 
-    /* span{
-        background-color: grey;
-        color: white;
-        padding: 10px;
-        width: 100px;
-    } */
+ 
+@media (max-width: 768px) {
+  flex-direction: column;
+  align-items: start;
+    }
 
 `
 
@@ -154,7 +151,7 @@ export const CategorySpan = styled.div`
 
 
 
-export const PostHeader = styled.div`
+export const CategoryHeader = styled.div`
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -162,20 +159,13 @@ export const PostHeader = styled.div`
 
 
 export const PostFormattingWrapper = styled.div`
-    width: 400px;
+    width: auto;
     display: flex;
     gap: 20px;
     align-items: center;
-    position: absolute;
+    /* position: absolute;
     right: -200px;
-    bottom: 20px;
-
-    @media (max-width: 768px) {
-    align-items: start;
-    justify-content: flex-start;
-    position: relative;
-    right: -80px;
- }
+    bottom: 0px; */
 `
 
 export const PostFormattingItem = styled.div`
@@ -189,9 +179,9 @@ export const PostFormattingItem = styled.div`
 export const PostFormattingIcon = styled.div`
     display: flex;
     color: ${({iconColor})=>iconColor};
-    font-size: ${({sz}) =>sz || '12px'};
+    font-size: 12px;
 `
 
 export const PostFormattingText = styled.div`
-     font-size: ${({sz}) =>sz || '12px'};;
+    font-size: 12px;
 `

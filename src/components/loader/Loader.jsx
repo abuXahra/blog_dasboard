@@ -2,7 +2,7 @@ import React from 'react';
 import { Circles } from 'react-loader-spinner'
 import { LoaderWrapper } from './Loader.style';
 
-const Loader = () => {
+const Loader = ({title}) => {
     return (
         <LoaderWrapper>
             <Circles
@@ -14,6 +14,7 @@ const Loader = () => {
                 wrapperClass=""
                 visible={true}
             />
+            <h5>Loading {title}</h5>
         </LoaderWrapper>
     );
 }

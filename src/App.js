@@ -13,6 +13,11 @@ import { useState } from "react";
 import DashboardHome from "./pages/admin/home/DashboardHome";
 import { Content, MainContent } from "./pages/admin/home/Home.style";
 import Posts from "./pages/admin/posts/Posts";
+import CreatePost from "./pages/admin/posts/createpost/CreatePost";
+import Categories from "./pages/admin/category/categories/Categories";
+import CategoryDetail from "./pages/admin/category/detail_category/CategoryDetail";
+import PostDetail from "./pages/admin/posts/detail_post/PostDetail";
+import EditPost from "./pages/admin/posts/edit_post/EditPost";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
@@ -58,6 +63,14 @@ function App() {
               <Route path="/" element={<DashboardHome />} />
               <Route path="/dashboard" element={<DashboardHome />} />
               <Route path="/posts" element={<Posts />} />
+              <Route path="/create-post" element={<CreatePost />} />
+              <Route path="/post/:postId" element={<PostDetail />} />
+              <Route path="/edit/:postId" element={<EditPost />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route
+                path="/category/:categoryId"
+                element={<CategoryDetail />}
+              />
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />

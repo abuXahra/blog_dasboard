@@ -20,8 +20,8 @@ export const SidebarItemLists = [
     icon: postIcon,
   },
   {
-    tile: "New Posts",
-    url: "/create-posts",
+    tile: "New Post",
+    url: "/create-post",
     icon: newPostIcon,
   },
   {
@@ -31,7 +31,7 @@ export const SidebarItemLists = [
   },
   {
     tile: "New Category",
-    url: "/create-category",
+    url: "/new-category",
     icon: newCategoryIcon,
   },
   {
