@@ -127,8 +127,9 @@ label{
 
 export const EditCatOptionsWrapper = styled.div`
 width: 100%;
- display: flex;
- gap: 20px;
+display: flex;
+flex-wrap: wrap;
+gap: 20px;
 
  @media (max-width:786px) {
     flex-direction: column;

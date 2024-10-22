@@ -31,7 +31,7 @@ export const SidebarItemLists = [
   },
   {
     tile: "New Category",
-    url: "/new-category",
+    url: "/create-category",
     icon: newCategoryIcon,
   },
   {

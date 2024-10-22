@@ -63,7 +63,7 @@ gap: 20px;
     
 input{
 border-radius: 2px;
-width: 90%;
+width: 83%;
 padding: 10px;
 border: none;
 background-color: #80808036;
@@ -74,13 +74,19 @@ background-color: #80808036;
 }
 }
 label{
+    width: 17%;
     background-color: #80808036; 
     border-radius: 2px;
     display: flex;
     align-items: center;
     padding: 0 20px;
-    /* flex: 1; */
+    gap:20px;
     color: grey;
+
+
+    span{
+        font-size: 13px;
+    }
 }
 `
 
@@ -116,13 +122,12 @@ align-items: center;
 gap: 20px;
 
 input{
-    width: 15px;
-    height: 15px;
+    width: 20px;
+    height: 20px;
 }
 
 label{
     text-transform: uppercase;
-    font-size: 12px;
 }
 `
 
@@ -130,6 +135,7 @@ label{
 export const CreateCatOptionsWrapper = styled.div`
  width: 100%;
  display: flex;
+ flex-wrap: wrap;
  gap: 20px;
 
  @media (max-width:786px) {

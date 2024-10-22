@@ -18,6 +18,7 @@ import Categories from "./pages/admin/category/categories/Categories";
 import CategoryDetail from "./pages/admin/category/detail_category/CategoryDetail";
 import PostDetail from "./pages/admin/posts/detail_post/PostDetail";
 import EditPost from "./pages/admin/posts/edit_post/EditPost";
+import CreateCategory from "./pages/admin/category/create_category/CreateCategory";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
@@ -71,6 +72,7 @@ function App() {
                 path="/category/:categoryId"
                 element={<CategoryDetail />}
               />
+              <Route path="/create-category" element={<CreateCategory />} />
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />

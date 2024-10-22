@@ -55,6 +55,7 @@ export default function Categories() {
 
 
 
+    
 
 
     // Delete Function
@@ -64,7 +65,7 @@ export default function Categories() {
         try {
           const res = await axios.delete(`${process.env.REACT_APP_URL}/api/categories/${categoryId}`, { withCredentials: true });
             setLoader(false)
-            navigate('/posts')
+            navigate('/categories')
             alert('deleted')
         } catch (err) {
             console.log(err)
