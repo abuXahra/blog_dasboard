@@ -19,6 +19,8 @@ import CategoryDetail from "./pages/admin/category/detail_category/CategoryDetai
 import PostDetail from "./pages/admin/posts/detail_post/PostDetail";
 import EditPost from "./pages/admin/posts/edit_post/EditPost";
 import CreateCategory from "./pages/admin/category/create_category/CreateCategory";
+import Adverts from "./pages/admin/adverts/Adverts";
+import EditAds from "./components/ads_components/edit_ads/EditAds";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
@@ -73,6 +75,9 @@ function App() {
                 element={<CategoryDetail />}
               />
               <Route path="/create-category" element={<CreateCategory />} />
+
+              <Route path="/adverts" element={<Adverts />} />
+              <Route path="/edit-ads" element={<EditAds />} />
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />

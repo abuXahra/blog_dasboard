@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-export const CreatePostWrapper = styled.div`
-    width: 90%;
+export const AddAdsPostWrapper = styled.div`
+    width: 100%;
     height: auto;
     padding: 40px 0;
     display: flex;
@@ -42,7 +42,7 @@ span{
 }
 `
 
-export const CreatePostForm = styled.form`
+export const AddAdsPostForm = styled.form`
 width: 100%;
 display: flex;
 flex-direction: column;
@@ -57,13 +57,14 @@ gap: 10px;
 `
 
 export const NameAndFileInput = styled.div`
+width: 100%;
 display: flex;
 justify-content: space-between;
 gap: 20px;
     
 input{
 border-radius: 2px;
-width: 83%;
+width: ${({inputWidth})=> inputWidth || '80%'};
 padding: 10px;
 border: none;
 background-color: #80808036;
@@ -74,18 +75,21 @@ background-color: #80808036;
 }
 }
 label{
-    width: 17%;
+    width: 20%;
     background-color: #80808036; 
     border-radius: 2px;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    gap:20px;
+    padding: 10px;
     color: grey;
-
-
     span{
         font-size: 13px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        gap:5px;
+
+        p{
+            font-size: 10px;
+        }
     }
 }
 `
@@ -105,7 +109,7 @@ background-color: #80808036;
 `
 
 
-export const CreatePostCat = styled.div`
+export const AddAdsPostCat = styled.div`
 width: 100%;
 display: flex;
 justify-content: space-between;
@@ -115,7 +119,7 @@ background-color: #80808036;
 `
 
 
-export const CreateCatOptions = styled.div`
+export const AddAdsCatOptions = styled.div`
 width: 100%;
 display: flex;
 align-items: center;
@@ -138,7 +142,7 @@ label{
 `
 
 
-export const CreateCatOptionsWrapper = styled.div`
+export const AddAdsCatOptionsWrapper = styled.div`
  width: 100%;
  display: flex;
  flex-wrap: wrap;
@@ -147,4 +151,36 @@ export const CreateCatOptionsWrapper = styled.div`
  @media (max-width:786px) {
     flex-direction: column;
  }
+`
+
+
+export const Select = styled.select`
+
+    border-radius: 2px;
+    width: 100%;
+    padding: 10px;
+    border: none;
+    background-color: #80808036;
+
+    &:focus{
+        outline: none;
+    }
+`
+
+
+export const AdsImage = styled.div`
+    width: 100%;
+
+    img{
+        width: 100%;
+    }
+`
+
+
+export const ErrorMessage = styled.span`
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    font-size: 12px;
+    color: red;
 `

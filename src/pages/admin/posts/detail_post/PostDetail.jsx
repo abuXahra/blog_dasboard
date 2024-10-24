@@ -13,6 +13,7 @@ import PostFormatting from '../../../../components/post_formating_items/PostForm
 import { MdDelete } from 'react-icons/md'
 import { FcApprove } from 'react-icons/fc'
 import Loader from '../../../../components/loader/Loader'
+import Overlay from '../../../../components/overlay/Overlay'
 
 
 export default function PostDetail() {
@@ -23,6 +24,7 @@ export default function PostDetail() {
         const navigate = useNavigate()
         const [loader, setLoader] = useState(false)
         const [comments, setComments] = useState([])
+       
 
 
         // comment form variables
@@ -32,6 +34,13 @@ export default function PostDetail() {
         const [website, setWebsite] = useState('')
         const [catId, setCatId] = useState()
         const [postCats, setPostCats] = useState()
+        const [postTitle, setPosTitle] = useState('');
+        const [commentId, setCommentId] = useState('');
+        const [commentText, setCommentText] = useState('')
+        
+        // overlay
+        const [showOverlay, setShowOverlay] = useState(false);
+        const [showDeleteComment, setShowDeleteComment] = useState(false);
     
 
         // fetch post function
@@ -84,15 +93,56 @@ export default function PostDetail() {
 
 
 
-// Delete
-    const handleDeletClick = async () => {
 
+     // Delete Function
+     const handleDelete = async (postId) => {
+        setLoader(true)
         try {
-            const res= await axios.delete('');
-        } catch (error) {
-            console.log(error);
+            const res = await axios.delete(process.env.REACT_APP_URL + `/api/posts/` + postId, { withCredentials: true });
+            setLoader(false)
+            navigate('/posts')
+            alert('deleted')
+        } catch (err) {
+            console.log(err)
+            setLoader(false)
         }
+        setShowOverlay(false)
     }
+
+
+    // Onclick Delete Icon
+    const handleDeletClick = (deleteId, deleteTitle) =>{
+        setPosTitle(deleteTitle)
+        setShowOverlay(true)
+
+    }
+
+
+    
+    // DELETE COMMENT
+         // Delete Function
+     const handleDeleteComment = async (commentId) => {
+        setLoader(true)
+        try {
+            const res = await axios.delete(process.env.REACT_APP_URL + `/api/posts/` + postId + `/comment/${commentId}`, { withCredentials: true });
+            setLoader(false)
+            alert('deleted')
+        } catch (err) {
+            console.log(err)
+            setLoader(false)
+        }
+        setShowDeleteComment(false)
+    }
+
+
+  // Onclick Delete comment Icon
+  const handleCommentDeleteClick = (commentId, commentText) =>{
+    setCommentId(commentId)
+    setCommentText(commentText)
+    setShowDeleteComment(true)
+
+}
+
 
   return ( <>
   { loader ? <Loader title={'Post'} /> :
@@ -154,7 +204,7 @@ export default function PostDetail() {
                                     iconColor={'green'}
                                 />       
                                 <PostFormatting
-                                    itemOnclick={()=>handleDeletClick(post._id, post.title)}
+                                    itemOnclick={()=>handleCommentDeleteClick(c._id, c.comment)}
                                     Icon={<MdDelete/>}
                                     text={'Delete'}
                                     iconColor={'red'}
@@ -166,58 +216,6 @@ export default function PostDetail() {
                         </RecentComment>
                         ))
                     }
-
-
-
-<RecentComment>
-                                <RecentCommentImg bgUrl={placeHolder}>
-                                    {/* // <img src={placeHolder} alt="" /> */}
-                                </RecentCommentImg>
-                                <CommentSpacing>
-                                <RecentPostContentWrapper>
-                                    <RecentCommentAuthorandDate>
-                                        <RecentCommentContentAuthor>
-                                            <h3>c.author</h3>
-                                            <span>
-                                                <FaRegClock />
-                                                new Date(c.createdAt).toDateString()
-                                            </span>
-                                        </RecentCommentContentAuthor>
-                                        <RecentCommentReply>
-                                            {/* <span><FaReply /> Reply</span> */}
-                                        </RecentCommentReply>
-                                    </RecentCommentAuthorandDate>
-
-                                    <RecentCommentContents>
-                                       Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt voluptate nemo natus omnis atque modi totam dignissimos dolorem. Animi laudantium ipsa praesentium omnis non, incidunt maxime ad. Voluptates eaque doloribus quod ex pariatur voluptas dolorum asperiores at quisquam nemo fugiat, ab, possimus ea reiciendis architecto facilis nostrum error numquam consequatur autem iste odit nisi. Officiis delectus ex deserunt sint distinctio qui eum molestias ab esse veniam, a molestiae expedita repudiandae laboriosam eaque corporis amet, non nobis hic ad tempora ut inventore repellendus in. Beatae iure quam ut porro ad cupiditate deserunt expedita, facere, ab debitis corrupti dolorum quo, placeat perspiciatis.
-                                    </RecentCommentContents>
-
-                                
-                                
-                                {/* formatt comment */}
-                                <PostFormattingWrapper jtcnt={'flex-end'} alitms={'end'}>     
-                                    <PostFormatting
-                                        sz={'12px'}
-                                        itemOnclick={()=>{}}
-                                        Icon={<FcApprove />}
-                                        text={'Approve '}
-                                        iconColor={'green'}
-                                    />       
-                                    <PostFormatting
-                                        itemOnclick={()=>handleDeletClick(post._id, post.title)}
-                                        Icon={<MdDelete/>}
-                                        text={'Delete'}
-                                        iconColor={'red'}
-                                        sz={'12px'}
-                                    />
-                                </PostFormattingWrapper>
-                                </RecentPostContentWrapper>
-                                </CommentSpacing>
-                            </RecentComment>
-
-
-
-
         </PostComments>
 
 
@@ -253,7 +251,35 @@ export default function PostDetail() {
                             iconColor={'red'}
                             sz={'14px'}
                         />
-                     </PostFormattingWrapper>
+                    </PostFormattingWrapper>
+
+    {/* Overlay Popup to delete post */}
+        { showOverlay &&
+           <Overlay
+                contentHight={""}
+                contentWidth={""}
+                overlayButtonClick={()=>handleDelete(postId)}
+                closeOverlayOnClick={()=>setShowOverlay(false)}
+            >
+            <h3>{postTitle}</h3>
+            <span>Are sure you want to</span>
+            <span>delete the post?</span> 
+            </Overlay>}
+
+
+        
+    {/* Overlay Popup to delete post */}
+    { showDeleteComment &&
+           <Overlay
+                contentHight={""}
+                contentWidth={""}
+                overlayButtonClick={()=>handleDeleteComment(commentId)}
+                closeOverlayOnClick={()=>setShowDeleteComment(false)}
+            >
+            <h3>{commentText}</h3>
+            <span>Are sure you want to</span>
+            <span>delete the comment?</span> 
+            </Overlay>}
 
     </PostDetailWrapper>}
     </>

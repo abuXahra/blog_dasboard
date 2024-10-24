@@ -7,13 +7,16 @@ import styled from 'styled-components'
 export const OverlayWrapper = styled.div`
 display: flex;
 justify-content: center;
-align-items: center;  
+align-items: start;  
 position: fixed; 
 height: 100vh; 
 width:100%; 
 top: 0px; 
 left: 0px;
 background-color: #00000076;
+overflow: auto;
+padding-bottom: 40px;
+padding-top: 40px;
 `
 
 
@@ -31,6 +34,11 @@ export const OverlayCard = styled.div`
     padding: 20px;
     font-size: 18px;
     text-align: center;
+
+    img{
+        border-radius: 10px;
+        border: 1px solid red;
+    }
 
     @media (max-width: 768px) {
         width: 80%;

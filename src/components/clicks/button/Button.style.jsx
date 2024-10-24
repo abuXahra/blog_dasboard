@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 
 export const ButtonWrapper = styled.button`
-    display: flex;
+    display: ${({btnDisplay}) => btnDisplay || 'flex'};
     gap: 5px;
     padding: ${({ btnPd }) => btnPd || "10px"} ;
     background-color: ${({ btnColor }) => btnColor || "red"};
