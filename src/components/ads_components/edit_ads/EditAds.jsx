@@ -30,7 +30,7 @@ const adTypeItems = [
 
 
 
-export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
+export default function EditAds({setCloseOverlay, closeOverlayOnClick, advertId }) {
 
   const navigate = useNavigate();
   let [photo, setPhoto] = useState('');
@@ -47,17 +47,23 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [showPhoto, setShowPhoto] = useState(true);
   
   useEffect(()=>{
-    const fetchAds = async ()=>{
+    const fetchAd = async ()=>{
         try {
-            const res = await axios.get(`${process.env.REACT_APP_URL}/api/adverts/`)
+            const res = await axios.get(`${process.env.REACT_APP_URL}/api/adverts/${advertId}`)
             console.log(res.data);
+            setTitle(res.data.title);
+            setAdType(res.data.adType);
+            setAdsUrl(res.data.adsUrl)
+            setPhoto(res.data.photo)
         } catch (error) {
             console.log(error )
         }
       }
-    
+
+      fetchAd();
   }, [])
 
 
@@ -71,6 +77,7 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
         setTitleError(false)
     }else if(type === 'file'){
         setFile(e.target.files[0])
+        setShowPhoto(false);
         setPhotoError(false);
     }else if(type === 'adsUrl'){
         setAdsUrl(e.target.value)
@@ -90,9 +97,7 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
         setAdTypeError(true)
     } if(adsUrl === null || adsUrl === ''){
         setAdsUrlError(true)
-    }  if(file === null || file === ''){
-        setPhotoError(true)
-    }else {
+    } else {
 
      // const newCategory = {
     //     title,
@@ -119,7 +124,7 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
     setIsLoading(true)
     // post creation
     try {
-        const res = await axios.put(`${process.env.REACT_APP_URL}/api/adverts/create`,
+        const res = await axios.put(`${process.env.REACT_APP_URL}/api/adverts/${advertId}`,
             { title, adType, adsUrl, photo }, { withCredentials: true })
         navigate(`/adverts`)
         console.log(res.data)
@@ -142,7 +147,7 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
     <Overlay
         contentHight={"auto"}
         contentWidth={"50%"}
-        btnText1={isLoading? <ButtonLoader text={'Updating'}/>  : 'Create Ads'}
+        btnText1={isLoading? <ButtonLoader text={'Updating'}/>  : 'Update Ads'}
         closeOverlayOnClick={closeOverlayOnClick} 
         jc={'flex-start'}
         btnDisplayNo='none'
@@ -151,10 +156,12 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
 <h2>Update Ads</h2>
       {/* Display Image befor posting to db */}
       <AdsImage>
-        {
-
-        }
-            {file && (<img src={URL.createObjectURL(file)} alt="" srcset="" />)}
+       
+          {showPhoto &&  <img src={`${process.env.REACT_APP_URL}/images/${photo}`} alt="" srcset="" />}
+            
+           { (file && (<img src={URL.createObjectURL(file)} alt="" srcset="" />))}
+            
+        
       </AdsImage>
    
 <NameAndFileInput>
@@ -178,7 +185,7 @@ export default function EditAds({setCloseOverlay, closeOverlayOnClick}) {
       <ErrorMessage>{titleError && 'Ads title is required'}</ErrorMessage>
       <ErrorMessage>{adTypeError && 'Ads Type is required'}</ErrorMessage>
       <ErrorMessage>{adsUrlError && 'Ads Url is required'}</ErrorMessage>
-      <ErrorMessage>{photoError && 'Ads photo is required'}</ErrorMessage>
+      {/* <ErrorMessage>{photoError && 'Ads photo is required'}</ErrorMessage> */}
 {/* 
 <div><Button btnText={'EditAds'} btnPd={'15px 30px'} /></div> */}
 </Overlay>

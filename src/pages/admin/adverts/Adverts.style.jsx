@@ -4,7 +4,7 @@ import styled from "styled-components"
 
 export const AdvertWrapper = styled.div`
     width: 100%;
-    height: ${({postWrapperHeight})=> postWrapperHeight || '100vh' };
+    height: ${({postWrapperHeight})=> postWrapperHeight || 'auto' };
     padding: 40px;
     background-color: #80808026;
     position: relative;
@@ -32,9 +32,7 @@ gap: 20px;
 background-color: white;
 border-radius: 10px;
 position: relative;
-
-
-
+box-shadow: rgba(0, 0, 0, 0.24);
 `
 
 

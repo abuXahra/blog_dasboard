@@ -16,42 +16,38 @@ import Overlay from '../../../components/overlay/Overlay'
 import bannerAds from '../../../images/banner-top-2.jpg'
 import { NameAndFileInput, PostPicture } from '../posts/createpost/CreatePost.style'
 import AddAds from '../../../components/ads_components/add_ads/AddAds'
+import EditAds from '../../../components/ads_components/edit_ads/EditAds'
 
 
 
 
-
-const POSTS_PER_PAGE = 6; //for pagination
 
 export default function Adverts() {
     
 
 
     const navigate = useNavigate();
-    const [categories, setCategories] = useState([])
+    const [adverts, setAdverts] = useState([])
     const [loader, setLoader] = useState(false) //Loader
-    const [currentPage, setCurrentPage] = useState(1); //for paginaon
+
 
     // TO DELET POST
-    const [categoryId, setCategoryId] = useState('');
-    const [categoryTitle, setCategoryTitle] = useState('');
+    const [advertId, setAdvertId] = useState('');
+    const [advertTitle, setAdvertTitle] = useState('');
     
     // overlay
     const [showBannerAdOverlay, setShowBannerAdOverlay] = useState(false);
 
     const [showOverlay, setShowOverlay] = useState(false);
     const [showAddAdvertCard, setShowAddAdvertCard] = useState(false)
-
-    const totalPages = Math.ceil(categories.length / POSTS_PER_PAGE); //for pagination
-    const currentCategories = categories.slice((currentPage - 1) * POSTS_PER_PAGE, currentPage * POSTS_PER_PAGE); //for pagination
-
+    const [showEditAds, setShowEditAds] =useState(false)
 
 
     // Fetch category function
     const fetchCat = async () => {
         try {
-            const res = await axios.get(`${process.env.REACT_APP_URL}/api/categories`)
-            setCategories(res.data)
+            const res = await axios.get(`${process.env.REACT_APP_URL}/api/adverts`)
+            setAdverts(res.data)
         } catch (err) {
             console.log(err)
         }
@@ -63,17 +59,21 @@ export default function Adverts() {
 
 
 
-    
+    // Edit Poput
+    const handleShowEdit = (advertId) => {
+        setAdvertId(advertId)
+        setShowEditAds(true)
+    }
 
 
     // Delete Function
        // Delete Function
-       const handleDelete = async (categoryId) => {
+       const handleDelete = async (advertId) => {
         setLoader(true)
         try {
-          const res = await axios.delete(`${process.env.REACT_APP_URL}/api/categories/${categoryId}`, { withCredentials: true });
+          const res = await axios.delete(`${process.env.REACT_APP_URL}/api/adverts/${advertId}`, { withCredentials: true });
             setLoader(false)
-            navigate('/categories')
+            navigate('/adverts')
             alert('deleted')
         } catch (err) {
             console.log(err)
@@ -85,8 +85,8 @@ export default function Adverts() {
 
     // Onclick Delete Icon
     const handleDeletClick = (deleteId, deleteTitle) =>{
-        setCategoryId(deleteId);
-        setCategoryTitle(deleteTitle)
+        setAdvertId(deleteId);
+        setAdvertTitle(deleteTitle)
         setShowOverlay(true)
 
     }
@@ -99,7 +99,7 @@ export default function Adverts() {
     {
         loader ? <Loader title={'Categories'} /> :
     <div>    
-    <AdvertWrapper postWrapperHeight={categories.length === 0 || currentCategories.length  < 6 ? '100vh' : 'auto'} >
+    <AdvertWrapper>
        
         <AdvertHeader>
            <h1>All Adverts</h1>
@@ -111,58 +111,13 @@ export default function Adverts() {
             />
         </AdvertHeader>
 
-      <AdvertContent>
-      <AdvertHeader>
-           <h3>Banner Ads</h3>
-        </AdvertHeader>
-        {
-            currentCategories.map((Advert)=>(
-                    <AdvertItems key={Advert._id}>
-                     <AdvertImage bg={`${process.env.REACT_APP_URL}/images/${Advert?.photo}`}>
-                         <PostLink to={`/Advert/${Advert._id}`}></PostLink>
-                     </AdvertImage>
-
-                     {/* Post Advert Contents */}
-                     <AdvertText>
-                         <PostLink to={`/Advert/${Advert._id}`}>
-                                 <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{Advert.title}</PostTitleStyled>     
-                         </PostLink>
-            
-
-                     <PostFormattingWrapper>
-                        <PostFormatting
-                            itemOnclick={()=>navigate(`/Advert/${Advert._id}`)}
-                            Icon={<FaEye />}
-                            text={'View Posts'}
-                            iconColor={'blue'}
-                        />     
-                        <PostFormatting
-                            itemOnclick={()=>{}}
-                            Icon={<FaRegEdit/>}
-                            text={'Edit'}
-                            iconColor={'green'}
-                        />       
-                         <PostFormatting
-                            itemOnclick={()=>handleDeletClick(Advert._id, Advert.title)}
-                            Icon={<MdDelete/>}
-                            text={'Delete'}
-                            iconColor={'red'}
-                        />
-                     </PostFormattingWrapper>
-                     </AdvertText>
-                 </AdvertItems>
-            ))
-        }
-</AdvertContent>  
-
 <AdvertContent>
-      <AdvertHeader>
-           <h3>Sidebar Ads</h3>
-  
+        <AdvertHeader>
+           <h3>Banner Ads</h3>
+
         </AdvertHeader>
-        {
-            currentCategories.map((Advert)=>(
-                    <AdvertItems key={Advert._id}>
+        { adverts.map((Advert)=>(
+                 Advert.adType === 'banner' ?  ( <AdvertItems key={Advert._id}>
                      <AdvertImage bg={`${process.env.REACT_APP_URL}/images/${Advert?.photo}`}>
                          <PostLink to={`/Advert/${Advert._id}`}></PostLink>
                      </AdvertImage>
@@ -170,7 +125,11 @@ export default function Adverts() {
                      {/* Post Advert Contents */}
                      <AdvertText>
                          <PostLink to={`/Advert/${Advert._id}`}>
-                                 <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{Advert.title}</PostTitleStyled>     
+                            <div>
+                                <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{Advert.title}</PostTitleStyled>
+                                <span style={{textTransform:"capitalize"}}>{Advert.adType}</span>
+                            </div>
+
                          </PostLink>
             
 
@@ -182,9 +141,9 @@ export default function Adverts() {
                             iconColor={'blue'}
                         />     
                         <PostFormatting
-                            itemOnclick={()=>{}}
+                            itemOnclick={()=>handleShowEdit(Advert._id)}
                             Icon={<FaRegEdit/>}
-                            text={'Edit'}
+                            text={'Change'}
                             iconColor={'green'}
                         />       
                          <PostFormatting
@@ -195,11 +154,59 @@ export default function Adverts() {
                         />
                      </PostFormattingWrapper>
                      </AdvertText>
-                 </AdvertItems>
+                 </AdvertItems>):<></>
             ))
         }
 </AdvertContent> 
-    
+
+
+<AdvertContent>
+        <AdvertHeader>
+           <h3>Sidebar Ads</h3>
+
+        </AdvertHeader>
+        { adverts.map((Advert)=>(
+                 Advert.adType === 'sidebar' ?  ( <AdvertItems key={Advert._id}>
+                     <AdvertImage bg={`${process.env.REACT_APP_URL}/images/${Advert?.photo}`}>
+                         <PostLink to={`/Advert/${Advert._id}`}></PostLink>
+                     </AdvertImage>
+
+                     {/* Post Advert Contents */}
+                     <AdvertText>
+                         <PostLink to={`/Advert/${Advert._id}`}>
+                            <div>
+                                <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{Advert.title}</PostTitleStyled>
+                                <span style={{textTransform:"capitalize"}}>{Advert.adType}</span>
+                            </div>
+
+                         </PostLink>
+            
+
+                     <PostFormattingWrapper>
+                        <PostFormatting
+                            itemOnclick={()=>navigate(`/Advert/${Advert._id}`)}
+                            Icon={<FaEye />}
+                            text={'View Posts'}
+                            iconColor={'blue'}
+                        />     
+                        <PostFormatting
+                            itemOnclick={()=>handleShowEdit(Advert._id)}
+                            Icon={<FaRegEdit/>}
+                            text={'Edit'}
+                            iconColor={'green'}
+                        />       
+                         <PostFormatting
+                            itemOnclick={()=>handleDeletClick(Advert._id, Advert.title)}
+                            Icon={<MdDelete/>}
+                            text={'Delete'}
+                            iconColor={'red'}
+                        />
+                     </PostFormattingWrapper>
+                     </AdvertText>
+                 </AdvertItems>):<></>
+            ))
+        }
+</AdvertContent>   
           
     </AdvertWrapper>
 
@@ -207,7 +214,6 @@ export default function Adverts() {
 
 
         {/* Create Ads Popup */}
-        
               { showAddAdvertCard &&  
                 <AddAds 
                     closeOverlayOnClick={()=>setShowAddAdvertCard(false)}
@@ -216,52 +222,32 @@ export default function Adverts() {
               }
        
             
-
-
-
-            {/* Overlay Popup to change banner Ads*/}
-            { showBannerAdOverlay &&
-            <Overlay
-                    contentHight={""}
-                    contentWidth={"auto"}
-                    overlayButtonClick={()=>handleDelete('postId')}
-                    closeOverlayOnClick={()=>setShowBannerAdOverlay(false)}
-                    btnText1={'Change Ads'}
+        {/* Edit Ads Popup */}
+              { showEditAds &&  
+                <EditAds 
+                    closeOverlayOnClick={()=>setShowEditAds(false)}
+                    setCloseOverlay={setShowEditAds}
+                    advertId={advertId}
                     
-                >
-                
-                <AdvertHeader>
-                    <h2>{'Nafdac ads'}</h2>
-
-                        <PictureWrapper>
-                            <label htmlFor="fileInput"><span><AiFillPicture /> Upload Picture </span> </label>
-                            <PostPicture onChange={(e) => {  }} type="file" id="fileInput" />
-                        </PictureWrapper>
-                </AdvertHeader>         
-
-                <img src={bannerAds} alt="" srcset="" />
-                <span>This Ads is running for 8 days and it is 4 days left</span>
-            </Overlay>
-            }
+                />
+        }
 
 
 
-
-
-
-
+        {/* Delete Ads Popup */}
+        
         {/* Overlay Popup */}
         { showOverlay &&
            <Overlay
                 contentHight={""}
                 contentWidth={""}
-                overlayButtonClick={()=>handleDelete('postId')}
+                overlayButtonClick={()=>handleDelete(advertId)}
                 closeOverlayOnClick={()=>setShowOverlay(false)}
             >
-            <h3>{'postTitle'}</h3>
+            <h3>{advertTitle}</h3>
             <span>Are sure you want to</span>
             <span>delete the Advert?</span> 
-            </Overlay>}
+            </Overlay>} 
 
     </div>
     }
