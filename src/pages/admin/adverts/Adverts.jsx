@@ -7,7 +7,7 @@ import Markdown from 'markdown-to-jsx'
 import { useNavigate } from 'react-router-dom'
 import { MdDelete, MdOutlineAdd } from 'react-icons/md'
 import { View } from 'lucide'
-import { AdvertContent, AdvertHeader, AdvertImage, AdvertItems, AdvertSpan, AdvertText, AdvertWrapper, DateIconStyled, DateStyled, DateTitledStyled, EditIconStyled, EditStyled, EditTitledStyled, PictureWrapper, PostFormattingWrapper, PostIconStyled, PostLink, PostLinks, PostTitleStyled } from './Adverts.style'
+import { AdvertContent, HeaderWrapper, AdvertImage, AdvertItems, AdvertSpan, AdvertText, AdvertWrapper, DateIconStyled, DateStyled, DateTitledStyled, EditIconStyled, EditStyled, EditTitledStyled, PictureWrapper, PostFormattingWrapper, PostIconStyled, PostLink, PostLinks, PostTitleStyled } from './Adverts.style'
 import Loader from '../../../components/loader/Loader'
 import Button from '../../../components/clicks/button/Button'
 import PostFormatting from '../../../components/post_formating_items/PostFormatting'
@@ -17,6 +17,7 @@ import bannerAds from '../../../images/banner-top-2.jpg'
 import { NameAndFileInput, PostPicture } from '../posts/createpost/CreatePost.style'
 import AddAds from '../../../components/ads_components/add_ads/AddAds'
 import EditAds from '../../../components/ads_components/edit_ads/EditAds'
+import ViewAds from '../../../components/ads_components/veiw_ads/ViewAds'
 
 
 
@@ -41,15 +42,18 @@ export default function Adverts() {
     const [showOverlay, setShowOverlay] = useState(false);
     const [showAddAdvertCard, setShowAddAdvertCard] = useState(false)
     const [showEditAds, setShowEditAds] =useState(false)
-
+    const [showViewAds, setShowViewAds] =useState(false)
 
     // Fetch category function
     const fetchCat = async () => {
+        setLoader(true)
         try {
             const res = await axios.get(`${process.env.REACT_APP_URL}/api/adverts`)
             setAdverts(res.data)
+            setLoader(false)
         } catch (err) {
             console.log(err)
+            setLoader(false)
         }
     }
     useEffect(() => {
@@ -59,10 +63,17 @@ export default function Adverts() {
 
 
 
-    // Edit Poput
+    // Edit Popup
     const handleShowEdit = (advertId) => {
         setAdvertId(advertId)
         setShowEditAds(true)
+    }
+
+
+    // Edit Popup
+    const handleShowView = (advertId) => {
+        setAdvertId(advertId)
+        setShowViewAds(true)
     }
 
 
@@ -94,14 +105,31 @@ export default function Adverts() {
    
 
 
+
+    // View popup delete and update funct
+    const ViewCardUpdateBtn = (advertId) =>{
+            setShowViewAds(false);
+            setShowEditAds(true);
+            setAdvertId(advertId)
+    }
+
+
+    const ViewCardDeletBtn = (advertId, advertTitle) =>{
+        setShowViewAds(false);
+        setShowOverlay(true);
+        setAdvertId(advertId)
+        setAdvertTitle(advertTitle)
+}
+
+
   return (
     <>
     {
-        loader ? <Loader title={'Categories'} /> :
+        loader ? <Loader title={'Adverts'} /> :
     <div>    
     <AdvertWrapper>
        
-        <AdvertHeader>
+        <HeaderWrapper>
            <h1>All Adverts</h1>
            <Button 
                   btnText={'Add New'} 
@@ -109,13 +137,13 @@ export default function Adverts() {
                   btnLeftIcon={<MdOutlineAdd />}
                   btnOnClick={()=>setShowAddAdvertCard(true)}
             />
-        </AdvertHeader>
+        </HeaderWrapper>
 
 <AdvertContent>
-        <AdvertHeader>
+        <HeaderWrapper>
            <h3>Banner Ads</h3>
 
-        </AdvertHeader>
+        </HeaderWrapper>
         { adverts.map((Advert)=>(
                  Advert.adType === 'banner' ?  ( <AdvertItems key={Advert._id}>
                      <AdvertImage bg={`${process.env.REACT_APP_URL}/images/${Advert?.photo}`}>
@@ -161,10 +189,10 @@ export default function Adverts() {
 
 
 <AdvertContent>
-        <AdvertHeader>
+        <HeaderWrapper>
            <h3>Sidebar Ads</h3>
 
-        </AdvertHeader>
+        </HeaderWrapper>
         { adverts.map((Advert)=>(
                  Advert.adType === 'sidebar' ?  ( <AdvertItems key={Advert._id}>
                      <AdvertImage bg={`${process.env.REACT_APP_URL}/images/${Advert?.photo}`}>
@@ -184,9 +212,9 @@ export default function Adverts() {
 
                      <PostFormattingWrapper>
                         <PostFormatting
-                            itemOnclick={()=>navigate(`/Advert/${Advert._id}`)}
+                            itemOnclick={()=>handleShowView(Advert._id)}
                             Icon={<FaEye />}
-                            text={'View Posts'}
+                            text={'View Ads'}
                             iconColor={'blue'}
                         />     
                         <PostFormatting
@@ -228,15 +256,25 @@ export default function Adverts() {
                     closeOverlayOnClick={()=>setShowEditAds(false)}
                     setCloseOverlay={setShowEditAds}
                     advertId={advertId}
-                    
+                />
+        }
+
+        {/* view Ads Popup */}
+              { showViewAds &&  
+                <ViewAds 
+                    closeOverlayOnClick={()=>setShowViewAds(false)}
+                    alternatFunc={()=>ViewCardDeletBtn(advertId, advertTitle)}
+                    overlayButtonClick={()=>ViewCardUpdateBtn(advertId)}
+                    advertId={advertId}
                 />
         }
 
 
 
-        {/* Delete Ads Popup */}
+
+
+        {/* Delete Ads Popup overlay */}
         
-        {/* Overlay Popup */}
         { showOverlay &&
            <Overlay
                 contentHight={""}

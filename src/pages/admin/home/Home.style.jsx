@@ -187,7 +187,7 @@ export const ChartContent = styled.div`
 
 
 export const UserContainer  = styled.div`
-    width: 70%;
+    width: ${({wd}) => wd || "70%"};
     display: flex;
     border-radius: 15px;
     background-color: white;

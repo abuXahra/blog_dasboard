@@ -21,6 +21,7 @@ import EditPost from "./pages/admin/posts/edit_post/EditPost";
 import CreateCategory from "./pages/admin/category/create_category/CreateCategory";
 import Adverts from "./pages/admin/adverts/Adverts";
 import EditAds from "./components/ads_components/edit_ads/EditAds";
+import Users from "./pages/admin/users/Users";
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
@@ -77,7 +78,8 @@ function App() {
               <Route path="/create-category" element={<CreateCategory />} />
 
               <Route path="/adverts" element={<Adverts />} />
-              <Route path="/edit-ads" element={<EditAds />} />
+              <Route path="/users" element={<Users />} />
+
               {/* <Route path="/category/:categoryId" element={<Category />} />
               <Route path="/post/:postId" element={<SinglePost />} />
               <Route path="/reset" element={<Reset />} />

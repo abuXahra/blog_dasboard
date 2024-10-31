@@ -2,7 +2,7 @@ import { Link } from "react-router-dom"
 import styled from "styled-components"
 
 
-export const AdvertWrapper = styled.div`
+export const UsersWrapper = styled.div`
     width: 100%;
     height: ${({postWrapperHeight})=> postWrapperHeight || 'auto' };
     padding: 40px;
@@ -14,7 +14,7 @@ export const AdvertWrapper = styled.div`
 `
 
 
-export const AdvertContent = styled.div`
+export const UsersContent = styled.div`
     width: 100%;
     height: auto;
     display: flex;
@@ -24,7 +24,7 @@ export const AdvertContent = styled.div`
 `
 
 
-export const AdvertItems = styled.div`
+export const UsersItems = styled.div`
 width: 100%;
 display: flex;
 align-items: center;
@@ -37,7 +37,7 @@ box-shadow: rgba(0, 0, 0, 0.24);
 
 
 
-export const AdvertImage = styled.div`
+export const UsersImage = styled.div`
     width: 20%;
     height: 100px;
     background-image: url(${({bg})=>bg});
@@ -48,7 +48,7 @@ export const AdvertImage = styled.div`
     background-color: #00032a;
 `
 
-export const AdvertText = styled.div`
+export const UsersText = styled.div`
     width: 80%;
     display: flex;
     /* flex-direction: column; */
@@ -140,7 +140,7 @@ export const PostTitleStyled = styled.div`
 `
 
 
-export const AdvertSpan = styled.div`
+export const Userspan = styled.div`
     display:flex;
     gap: 5px;
 `

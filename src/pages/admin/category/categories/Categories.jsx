@@ -41,11 +41,14 @@ export default function Categories() {
 
     // Fetch category function
     const fetchCat = async () => {
+        setLoader(true)
         try {
             const res = await axios.get(`${process.env.REACT_APP_URL}/api/categories`)
             setCategories(res.data)
+            setLoader(false)
         } catch (err) {
             console.log(err)
+            setLoader(false)
         }
     }
     useEffect(() => {

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ViewAdsPostWrapper = styled.div`
+export const EditUserPostWrapper = styled.div`
     width: 100%;
     height: auto;
     padding: 40px 0;
@@ -42,7 +42,7 @@ span{
 }
 `
 
-export const ViewAdsPostForm = styled.form`
+export const EditUserPostForm = styled.form`
 width: 100%;
 display: flex;
 flex-direction: column;
@@ -56,7 +56,7 @@ gap: 10px;
 
 `
 
-export const NameAndFileInput = styled.div`
+export const InputWrapper = styled.div`
 width: 100%;
 display: flex;
 justify-content: space-between;
@@ -109,7 +109,7 @@ background-color: #80808036;
 `
 
 
-export const ViewAdsPostCat = styled.div`
+export const EditUserPostCat = styled.div`
 width: 100%;
 display: flex;
 justify-content: space-between;
@@ -119,7 +119,7 @@ background-color: #80808036;
 `
 
 
-export const ViewAdsCatOptions = styled.div`
+export const EditUserCatOptions = styled.div`
 width: 100%;
 display: flex;
 align-items: center;
@@ -142,7 +142,7 @@ label{
 `
 
 
-export const ViewAdsCatOptionsWrapper = styled.div`
+export const EditUserCatOptionsWrapper = styled.div`
  width: 100%;
  display: flex;
  flex-wrap: wrap;
@@ -177,10 +177,10 @@ export const AdsImage = styled.div`
 `
 
 
-export const ViewData = styled.div`
+export const ErrorMessage = styled.span`
     width: 100%;
     display: flex;
-    justify-content: space-between;
-    font-size: 14px;
-    text-transform: capitalize;
+    justify-content: start;
+    font-size: 9px;
+    color: red;
 `
