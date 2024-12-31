@@ -119,8 +119,6 @@ export default function Categories() {
                          <PostLink to={`/category/${category._id}`}>
                                  <PostTitleStyled fnt={"14px"} lingHeight={"30px"}>{category.title}</PostTitleStyled>     
                          </PostLink>
-            
-
                      <PostFormattingWrapper>
                         <PostFormatting
                             itemOnclick={()=>navigate(`/category/${category._id}`)}
@@ -129,7 +127,7 @@ export default function Categories() {
                             iconColor={'blue'}
                         />     
                         <PostFormatting
-                            itemOnclick={()=>{}}
+                            itemOnclick={()=>navigate(`/editcategory/${category._id}`)}
                             Icon={<FaRegEdit/>}
                             text={'Edit'}
                             iconColor={'green'}
@@ -167,7 +165,7 @@ export default function Categories() {
             >
             <h3>{categoryTitle}</h3>
             <span>Are sure you want to</span>
-            <span>delete the category?</span> 
+            <span>delete this category?</span> 
             </Overlay>}
 
     </div>

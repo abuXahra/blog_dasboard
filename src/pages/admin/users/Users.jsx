@@ -20,6 +20,7 @@ import ViewAds from '../../../components/ads_components/veiw_ads/ViewAds'
 import { HeaderWrapper, PostFormattingWrapper, PostLink, PostTitleStyled, UsersContent, UsersImage, UsersItems, UsersText, UsersWrapper } from './Users.style'
 import AddUser from '../../../components/user_comp/add_user/AddUser'
 import EditUser from '../../../components/user_comp/edit_user/EditUser'
+import ViewUser from '../../../components/user_comp/view_user/ViewUser'
 
 
 
@@ -104,9 +105,6 @@ export default function Users() {
 
     }
 
-   
-
-
 
     // View popup delete and update funct
     const ViewCardUpdateBtn = (userId) =>{
@@ -163,7 +161,7 @@ export default function Users() {
 
                      <PostFormattingWrapper>
                         <PostFormatting
-                            itemOnclick={()=>navigate(`/users/${user._id}`)}
+                            itemOnclick={()=>handleShowViewUser(user._id)}
                             Icon={<FaEye />}
                             text={'View Posts'}
                             iconColor={'blue'}
@@ -214,7 +212,7 @@ export default function Users() {
 
         {/* view Ads Popup */}
               { showViewUser &&  
-                <ViewAds 
+                <ViewUser 
                     closeOverlayOnClick={()=>setShowViewUser(false)}
                     alternatFunc={()=>ViewCardDeletBtn(userIds, userTitle)}
                     overlayButtonClick={()=>ViewCardUpdateBtn(userIds)}

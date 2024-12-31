@@ -170,7 +170,7 @@ export default function CategoryDetail() {
                             iconColor={'blue'}
                         />     
                         <PostFormatting
-                            itemOnclick={()=>{}}
+                            itemOnclick={()=>navigate(`/edit/${post._id}`)}
                             Icon={<FaRegEdit/>}
                             text={'Edit'}
                             iconColor={'green'}

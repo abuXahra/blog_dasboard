@@ -3,13 +3,12 @@ import {
   Routes,
   Route,
   Navigate,
-  useNavigate,
+  useLocation,
 } from "react-router-dom";
-
 import ScrollToTop from "./components/context/ScrollToTop";
 import Siderbar from "./components/sidebar/Siderbar";
 import HeaderDashboard from "./components/header/HeaderDashboard";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import DashboardHome from "./pages/admin/home/DashboardHome";
 import { Content, MainContent } from "./pages/admin/home/Home.style";
 import Posts from "./pages/admin/posts/Posts";
@@ -22,12 +21,32 @@ import CreateCategory from "./pages/admin/category/create_category/CreateCategor
 import Adverts from "./pages/admin/adverts/Adverts";
 import EditAds from "./components/ads_components/edit_ads/EditAds";
 import Users from "./pages/admin/users/Users";
+import EditCategory from "./pages/admin/category/edit_category/EditCategory";
+import Login from "./pages/auth/Login";
+import HiderHeader from "./components/hide/Hider-header/HiderHeader";
+import HideSidebar from "./components/hide/hide-sidebar/HideSidebar";
+import { UserContext } from "./components/context/UserContext";
+import ProtectedRoute from "./components/protected_route/ProtectedRoute";
+// import ProtectedRoute from "./components/ProtectedRoute"; // Import ProtectedRoute
 
 function App() {
   const [displayShowSidebar, setDisplayShowSidebar] = useState("none");
   const [mainContentWidth, setMainContentWidth] = useState("80%");
   const [showHbg, setShowHbg] = useState("none");
   const [deskDisplaySidebar, setDeskDisplaySidebar] = useState("flex");
+
+  const { user, setUser } = useContext(UserContext); // Get user and setUser from context
+
+  const location = useLocation(); // Get the current location (path)
+
+  // Update mainContentWidth when path is "/"
+  useEffect(() => {
+    if (location.pathname === "/") {
+      setMainContentWidth("100%"); // Set width to 100% when on the homepage
+    } else {
+      setMainContentWidth("80%"); // Set default width to 80%
+    }
+  }, [location.pathname]);
 
   const showSidebar = () => {
     setDisplayShowSidebar("flex");
@@ -39,12 +58,11 @@ function App() {
     setShowHbg("none");
   };
 
-  // halal app
   return (
-    <Router>
-      <ScrollToTop>
-        <Content>
-          {/* Sidebar */}
+    <ScrollToTop>
+      <Content>
+        {/* Sidebar */}
+        <HideSidebar>
           <Siderbar
             displayShowSidebar={displayShowSidebar}
             setDisplayShowSidebar={setDisplayShowSidebar}
@@ -53,52 +71,75 @@ function App() {
             deskDisplaySidebar={deskDisplaySidebar}
             setDeskDisplaySidebar={setDeskDisplaySidebar}
           />
+        </HideSidebar>
 
-          <MainContent mainContentWidth={mainContentWidth}>
-            {/* Header */}
+        <MainContent mainContentWidth={mainContentWidth}>
+          {/* Header */}
+          <HiderHeader>
             <HeaderDashboard
               showSidebar={showSidebar}
               showHbg={showHbg}
               shoDesktopSidebar={shoDesktopSidebar}
             />
+          </HiderHeader>
 
-            {/* Routes */}
-            <Routes>
-              <Route path="/" element={<DashboardHome />} />
-              <Route path="/dashboard" element={<DashboardHome />} />
-              <Route path="/posts" element={<Posts />} />
-              <Route path="/create-post" element={<CreatePost />} />
-              <Route path="/post/:postId" element={<PostDetail />} />
-              <Route path="/edit/:postId" element={<EditPost />} />
-              <Route path="/categories" element={<Categories />} />
-              <Route
-                path="/category/:categoryId"
-                element={<CategoryDetail />}
-              />
-              <Route path="/create-category" element={<CreateCategory />} />
+          {/* Routes */}
+          <Routes>
+            {/* Redirect to Dashboard if logged in */}
+            <Route
+              path="/"
+              element={user ? <Navigate to="/dashboard" /> : <Login />}
+            />
 
-              <Route path="/adverts" element={<Adverts />} />
-              <Route path="/users" element={<Users />} />
-
-              {/* <Route path="/category/:categoryId" element={<Category />} />
-              <Route path="/post/:postId" element={<SinglePost />} />
-              <Route path="/reset" element={<Reset />} />
-              <Route path="/register" element={<Register />} />
-              <Route path="/new" element={<CreatePost />} />
-              <Route path="/login" element={<Login />} />
-              <Route path="/edit/:id" element={<EditPost />} />
-              <Route path="/profile/:id" element={<Profile />} />
-              <Route path="/addcategory" element={<AddCategory />} />
-              <Route path="/editcategory/:id" element={<EditCategory />} />
-              <Route path="/result" element={<SearchResult />} />
-              <Route path="/loader" element={<Loader />} />
-              <Route path="/video-post" element={<CreateVideo />} />
-              <Route path="/dashboard/home" element={<DashboardHome />} /> */}
-            </Routes>
-          </MainContent>
-        </Content>
-      </ScrollToTop>
-    </Router>
+            {/* Protected Routes */}
+            <Route
+              path="/dashboard"
+              element={<ProtectedRoute element={<DashboardHome />} />}
+            />
+            <Route
+              path="/posts"
+              element={<ProtectedRoute element={<Posts />} />}
+            />
+            <Route
+              path="/create-post"
+              element={<ProtectedRoute element={<CreatePost />} />}
+            />
+            <Route
+              path="/post/:postId"
+              element={<ProtectedRoute element={<PostDetail />} />}
+            />
+            <Route
+              path="/edit/:postId"
+              element={<ProtectedRoute element={<EditPost />} />}
+            />
+            <Route
+              path="/categories"
+              element={<ProtectedRoute element={<Categories />} />}
+            />
+            <Route
+              path="/category/:categoryId"
+              element={<ProtectedRoute element={<CategoryDetail />} />}
+            />
+            <Route
+              path="/create-category"
+              element={<ProtectedRoute element={<CreateCategory />} />}
+            />
+            <Route
+              path="/editcategory/:categoryId/"
+              element={<ProtectedRoute element={<EditCategory />} />}
+            />
+            <Route
+              path="/adverts"
+              element={<ProtectedRoute element={<Adverts />} />}
+            />
+            <Route
+              path="/users"
+              element={<ProtectedRoute element={<Users />} />}
+            />
+          </Routes>
+        </MainContent>
+      </Content>
+    </ScrollToTop>
   );
 }
 

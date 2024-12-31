@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const SidebarWrapper  = styled.div`
     height: 100vh;
-    width: 20%;
+    width: ${({sidebarWidth})=> sidebarWidth || "20%"};
     background-color: #00032a;
     color: white;
     position: fixed;
